@@ -388,7 +388,7 @@ test( "Recognizer and configs", function() {
     var words = new Module.VectorWords();
     words.push_back(["AH", "AH"]);
     equal(x.addWords(words), Module.ReturnType.SUCCESS, "Recognizer should be valid");
-    y.set(0, ["-fwdflat", "no"]);
+    y.push_back(["-fwdflat", "no"]);
     equal(x.reInit(y), Module.ReturnType.SUCCESS, "Re-init with valid config should work");
     equal(x.getHyp(), "", "Initial hyp should be empty");
     x.delete();
@@ -464,6 +464,13 @@ test("Dictionary words", function() {
     words.set(0,["F(2)", "AH"]);
     equal(recognizer.addWords(words), Module.ReturnType.RUNTIME_ERROR, "Invalid words should not be added successfully");
 });
+
+test("Looking up words", function() {
+    words.push_back(["A", "AH"]);
+    equal(recognizer.addWords(words), Module.ReturnType.SUCCESS, "Valid words should be added successfully");
+    equal(recognizer.lookupWord("A"), "AH", "Words in the dictionary should be looked up correctly");
+    equal(recognizer.lookupWord("B"), "", "Words not in the dictionary should return empty strings");
+})
 
 test("Grammars", function() {
     words.push_back(["A", "AH"]);
